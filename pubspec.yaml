@@ -34,6 +34,9 @@ dependencies:
   cloud_firestore: ^0.12.9+5
   provider: ^3.1.0+1
   google_sign_in: ^4.0.7
+
+  
+ 
   tflite:
 
 dev_dependencies:
@@ -68,6 +71,32 @@ flutter:
     - images/disease3.jpg
     - model/model_labels.txt
     - model/model.tflite
+    - model/apple.txt
+    - model/apple.tflite
+    - images/toma.png
+    - images/apple.png
+    - images/grapes.png
+    - images/APP0.jpg
+    - images/APP1.jpg
+    - images/APP3.jpg
+    - images/APP2.jpg
+    - images/rust1.jpg
+    - images/rust2.jpg
+    - images/rust3.jpg
+    - images/grp1.jpg
+    - images/grp2.jpg
+    - images/grp3.jpg
+    - images/grp4.jpg
+    - images/esca1.jpg
+    - images/esca2.jpg
+    - images/esca3.jpg
+    - images/tmt1.jpg
+    - images/tmt2.jpg
+    - images/tmt3.jpg
+    - images/tmt4.jpg
+    - images/tm1.jpg
+    - images/tm2.jpg
+    - images/tm3.jpg
 
 fonts:
   - family: Roboto

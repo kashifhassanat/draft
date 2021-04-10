@@ -11,6 +11,8 @@ import 'package:plant_disease_detection/app/screens/update_profile.dart';
 import 'package:plant_disease_detection/app/services/auth.dart';
 import 'package:plant_disease_detection/app/signin/default_page.dart';
 
+import 'mainpage.dart';
+
 const PRIMARY = "primary";
 const WHITE = "white";
 
@@ -57,7 +59,7 @@ class _State extends State<Profile> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.amberAccent,
         title: Text("Profile",
         ),
         leading: IconButton(
@@ -104,38 +106,25 @@ class _State extends State<Profile> {
                         this.context,
                         new MaterialPageRoute(
                             builder: (context) =>
-                                new HomeScreen(auth: Auth())));
+                               new MainPage(auth: Auth())));
                   },
                 ),
-                ListTile(
-                  dense: true,
-                  title: Text(
-                    "Image",
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  leading: Icon(Icons.image),
-                  onTap: () {
-                    Navigator.push(
-                        this.context,
-                        new MaterialPageRoute(
-                            builder: (context) => new Tensorflow()));
-                  },
-                ),
-                ListTile(
-                  dense: true,
-                  title: Text(
-                    "Profiles",
-                    style: TextStyle(color: Colors.black,
-                    fontFamily: 'Roboto'),
-                  ),
-                  leading: Icon(Icons.person),
-                  onTap: () {
-                    Navigator.push(
-                        this.context,
-                        new MaterialPageRoute(
-                            builder: (context) => new Profile(auth: Auth())));
-                  },
-                ),
+               
+                 ListTile(
+                            dense: true,
+                            title: Text(
+                              "Query",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            leading: Icon(Icons.image),
+                            onTap: () {
+                              Navigator.push(
+                                  this.context,
+                                  new MaterialPageRoute(
+                                      builder: (context) =>
+                                          new Faq ()));
+                            },
+                          ),
               ]),
             ),
           ),
@@ -323,7 +312,7 @@ class _State extends State<Profile> {
                                             SizedBox(
                                               height: 55.0,
                                               child: CustomRaisedButton(
-                                                  color: Color(0xFFB2002D),
+                                                  color: Colors.amberAccent,
                                                   child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment

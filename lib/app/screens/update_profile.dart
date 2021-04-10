@@ -24,16 +24,27 @@ class UpdateProfile extends StatefulWidget {
 }
 
 class _State extends State<UpdateProfile> {
-  final formKey = new GlobalKey();
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final _addressKey = GlobalKey<FormState>();
+  final _passKey = GlobalKey<FormState>();
+ final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   String get _name => _nameController.text;
-  String get _email => _emailController.text;
+
+  String get _password => _passwordController.text;
   String get _address => _addressController.text;
   
   TextEditingController controller = TextEditingController();
+   String pwdValidator(String value) {
+    if (value.length < 8) {
+      return 'Password must be longer than 8 characters';
+    } else {
+      return null;
+    }
+  }
   void updateUserName() async {
+     if (_formKey.currentState.validate()) {
     var firebaseUser = await FirebaseAuth.instance.currentUser();
     return await Firestore.instance
         .collection("users")
@@ -49,10 +60,11 @@ class _State extends State<UpdateProfile> {
                           )),
                   (Route<dynamic> route) => false),
               _nameController.clear(),
-            });
+            });}
   }
 
-  void updateUserAddress() async {
+
+  void updateUserAddress() async {if (_addressKey.currentState.validate()) {
     var firebaseUser = await FirebaseAuth.instance.currentUser();
     return await Firestore.instance
         .collection("users")
@@ -67,15 +79,15 @@ class _State extends State<UpdateProfile> {
                   (Route<dynamic> route) => false),
               _nameController.clear(),
             });
-  }
+  }}
 
-  void updateUserEmail() async {
+  void updateUserPass() async {if (_passKey.currentState.validate()) {
     var firebaseUser = await FirebaseAuth.instance.currentUser();
     return await Firestore.instance
         .collection("users")
         .document(firebaseUser.uid)
         .updateData({
-      "email": _email,
+      "password": _password,
     }).then((result) => {
               Navigator.pushAndRemoveUntil(
                   context,
@@ -86,57 +98,58 @@ class _State extends State<UpdateProfile> {
                   (Route<dynamic> route) => false),
               _nameController.clear(),
             });
-  }
+  }}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      body: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage('images/main.png'), fit: BoxFit.fill)),
-        child: ListView(
-          /// crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    colors: [
-                      Colors.lightGreenAccent,
-                      Colors.white.withOpacity(0.6),
-                    ],
+        resizeToAvoidBottomPadding: false,
+        body: Container(
+    width: double.infinity,
+    decoration: BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage('images/main.png'), fit: BoxFit.fill)),
+    child: ListView(
+      /// crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomLeft,
+                colors: [
+                  Colors.lightGreenAccent,
+                  Colors.white.withOpacity(0.6),
+                ],
+              ),
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(50.0),
+                  topLeft: Radius.circular(50.0))),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(children: <Widget>[
+                Container(
+                  child: Container(
+                    child: Text(
+                      "Update Account",
+                      style: TextStyle(
+                          fontSize: 32.0, fontWeight: FontWeight.bold),
+                    ),
+                    alignment: Alignment.topLeft,
                   ),
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(50.0),
-                      topLeft: Radius.circular(50.0))),
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(children: <Widget>[
-                    Container(
-                      child: Container(
-                        child: Text(
-                          "Update Account",
-                          style: TextStyle(
-                              fontSize: 32.0, fontWeight: FontWeight.bold),
-                        ),
-                        alignment: Alignment.topLeft,
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 15.0,
-                    ),
-                    Container(
-                      child: TextField(
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                  ),
+                ),
+                SizedBox(
+                  height: 15.0,
+                ),
+             Form(key: _formKey,
+                            child: Container(
+                      child: TextFormField(
                         controller: _nameController,
                         decoration: InputDecoration(
                           labelText: "Full Name",
@@ -152,128 +165,150 @@ class _State extends State<UpdateProfile> {
                             // borderSide: BorderSide(color: Colors.grey),
                           ),
                         ),
+                         validator: (value) {
+        if (value.length < 4) {
+    return "Please enter a valid full name.";
+        }
+        return null;
+  },
+        
                       ),
                     ),
-                    Container(
-                      child: FlatButton(
-                        onPressed: updateUserName,
-                        child: Text(
-                          "Change User Name",
-                          style: TextStyle(
-                              fontSize: 19.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue),
-                        ),
-                      ),
-                      alignment: Alignment.bottomRight,
+             ),
+                Container(
+                  child: FlatButton(
+                    onPressed: updateUserName,
+                    child: Text(
+                      "Change User Name",
+                      style: TextStyle(
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue),
                     ),
-                    SizedBox(
-                      height: 12.0,
-                    ),
-                    Container(
-                      child: TextField(
-                        controller: _addressController,
-                        decoration: InputDecoration(
-                          labelText: "Land Address",
-                          hintText: "Enter your land address",
-                          // hoverColor: Colors.black,
-                          fillColor: Colors.white, filled: true,
-                          labelStyle: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50.0),
-                            // borderSide: BorderSide(color: Colors.grey),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: FlatButton(
-                        onPressed: updateUserAddress,
-                        child: Text(
-                          "Change User Adress",
-                          style: TextStyle(
-                              fontSize: 19.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue),
-                        ),
-                      ),
-                      alignment: Alignment.bottomRight,
-                    ),
-                    SizedBox(
-                      height: 12.0,
-                    ),
-                    Container(
-                      child: TextField(
-                        controller: _emailController,
-                        decoration: InputDecoration(
-                          labelText: "Email Adress",
-                          hintText: "Enter your email",
-                          // hoverColor: Colors.black,
-                          fillColor: Colors.white, filled: true,
-                          labelStyle: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50.0),
-                            // borderSide: BorderSide(color: Colors.grey),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: FlatButton(
-                        onPressed: updateUserEmail,
-                        child: Text(
-                          "Change User Email",
-                          style: TextStyle(
-                              fontSize: 19.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue),
-                        ),
-                      ),
-                      alignment: Alignment.bottomRight,
-                    ),
-                    SizedBox(
-                      height: 12.0,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      child: SizedBox(
-                        height: 55.0,
-                        child: CustomRaisedButton(
-                            color: Color(0xFFB2002D),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  '  Cancel',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 19.0,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                            onPressed: () => {
-                                  Navigator.push(
-                                      this.context,
-                                      new MaterialPageRoute(
-                                          builder: (context) =>
-                                              new Profile(auth: Auth())))
-                                }),
-                      ),
-                    ),
-                  ]),
+                  ),
+                  alignment: Alignment.bottomRight,
                 ),
-              ),
+                SizedBox(
+                  height: 12.0,
+                ),
+
+
+
+               Form(key:_addressKey,
+                 child: Container(
+                           child: TextFormField(
+                      controller: _addressController,
+                      decoration: InputDecoration(
+                        labelText: "Land Address",
+                        hintText: "Enter your land address",
+                        // hoverColor: Colors.black,
+                        fillColor: Colors.white, filled: true,
+                        labelStyle: TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                          // borderSide: BorderSide(color: Colors.grey),
+                        ),
+                      ), validator: (value) {
+      if (value.length < 10) {
+        return "Please enter a valid address.";
+      }
+      return null;
+  },
+                    ),
+                  ),
+               ),
+                Container(
+                  child: FlatButton(
+                    onPressed: updateUserAddress,
+                    child: Text(
+                      "Change User Adress",
+                      style: TextStyle(
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue),
+                    ),
+                  ),
+                  alignment: Alignment.bottomRight,
+                ),
+                SizedBox(
+                  height: 12.0,
+                ),
+                  Form(key:_passKey,
+                                      child: Container(
+                    child: TextFormField(
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        labelText: "Password",
+                        hintText: "Enter your password",
+                        // hoverColor: Colors.black,
+                        fillColor: Colors.white, filled: true,
+                        labelStyle: TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                          // borderSide: BorderSide(color: Colors.grey),
+                        ),
+                      ),
+                      obscureText: true,
+                      validator: pwdValidator,
+                    ),
+                ),
+                  ),
+                Container(
+                  child: FlatButton(
+                    onPressed: updateUserPass,
+                    child: Text(
+                      "Change User Password",
+                      style: TextStyle(
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue),
+                    ),
+                  ),
+                  alignment: Alignment.bottomRight,
+                ),
+                SizedBox(
+                  height: 12.0,
+                ),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  child: SizedBox(
+                    height: 55.0,
+                    child: CustomRaisedButton(
+                        color: Color(0xFFB2002D),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '  Cancel',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 19.0,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                        onPressed: () => {
+                              Navigator.push(
+                                  this.context,
+                                  new MaterialPageRoute(
+                                      builder: (context) =>
+                                          new Profile(auth: Auth())))
+                            }),
+                  ),
+                ),
+              ]),
             ),
-          ],
+          ),
         ),
-      ),
-    );
+      ],
+    ),
+        ),
+      );
   }
 }
