@@ -97,6 +97,11 @@ flutter:
     - images/tm1.jpg
     - images/tm2.jpg
     - images/tm3.jpg
+    - images/applescab/scab1.jpg
+    - images/applescab/scab2.jpg
+    - images/applescab/scab3.jpg
+    - images/applescab/scab4.jpg
+    
 
 fonts:
   - family: Roboto

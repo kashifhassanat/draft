@@ -11,6 +11,7 @@ import 'package:plant_disease_detection/app/screens/profile.dart';
 import 'package:plant_disease_detection/app/services/auth.dart';
 import 'package:tflite/tflite.dart';
 
+import 'AppleDiseasesScreen/apple_scab.dart';
 import 'diseaaseScreen.dart';
 
 class Appledisease extends StatefulWidget {
@@ -70,7 +71,7 @@ if(_outputs[0]["label"]=="Apple_Black_rot"){
                                   this.context,
                                   new MaterialPageRoute(
                                       builder: (context) =>
-                                          new MainPage(auth: Auth())));
+                                          new AppleScab()));
 }
                           }
     });

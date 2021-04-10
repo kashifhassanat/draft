@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -111,7 +113,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               accountEmail: null,
                               accountName: Container(
-                                child: Row(
+                                child: Column(
+                                  
                                   children: [
                                     Text(
                                       'Welcome ',
