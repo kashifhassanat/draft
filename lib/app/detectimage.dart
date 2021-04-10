@@ -10,12 +10,12 @@ import 'package:plant_disease_detection/app/screens/profile.dart';
 import 'package:plant_disease_detection/app/services/auth.dart';
 import 'package:tflite/tflite.dart';
 
-class Tensorflow extends StatefulWidget {
+class Disease extends StatefulWidget {
   @override
-  _TensorflowState createState() => _TensorflowState();
+  _DiseaseState createState() => _DiseaseState();
 }
 
-class _TensorflowState extends State<Tensorflow> {
+class _DiseaseState extends State<Disease> {
   List _outputs;
   File _image;
   bool _loading = false;
@@ -35,8 +35,8 @@ class _TensorflowState extends State<Tensorflow> {
 
   loadModel() async {
     await Tflite.loadModel(
-      model: "model/model.tflite",
-    labels: "model/model_labels.txt",
+    model: "model/apple.tflite",
+    labels: "model/apple.txt",
       numThreads: 1,
     );
   }
@@ -54,7 +54,7 @@ class _TensorflowState extends State<Tensorflow> {
       _loading = false;
       _outputs = output;
          {
-if(_outputs[0]["label"]==text){
+if(_outputs[0]["label"]=="Apple_Black_rot"){
 
    Navigator.push(
                                   this.context,

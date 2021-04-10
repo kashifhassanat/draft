@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:plant_disease_detection/app/screens/homescreen.dart';
+import 'package:plant_disease_detection/app/screens/mainpage.dart';
 import 'package:plant_disease_detection/app/screens/profile.dart';
 import 'package:plant_disease_detection/app/services/auth.dart';
 import 'package:plant_disease_detection/app/signin/default_page.dart';
@@ -27,7 +28,7 @@ User user= snapshot.data;
       
     );
     }
-    return Profile(
+    return MainPage(
       auth: auth, 
    
       

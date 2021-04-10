@@ -2,12 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:plant_disease_detection/app/screens/appledetect.dart';
+import 'package:plant_disease_detection/app/screens/check.dart';
 import 'package:plant_disease_detection/app/screens/detectimage.dart';
 import 'package:plant_disease_detection/app/screens/faq.dart';
+import 'package:plant_disease_detection/app/screens/mainpage.dart';
 import 'package:plant_disease_detection/app/screens/profile.dart';
 import 'package:plant_disease_detection/app/screens/update_profile.dart';
 import 'package:plant_disease_detection/app/services/auth.dart';
 import 'package:plant_disease_detection/app/signin/default_page.dart';
+
 
 class HomeScreen extends StatefulWidget {
   final AuthBase auth;
@@ -40,20 +44,17 @@ class _HomeScreenState extends State<HomeScreen> {
  Future<void> _signOut() async {
     try {
       await widget.auth.signOut();
-        Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) {
-                                        return DefaultPage(auth: Auth(),);
-                                      }));
+      
     } catch (e) {
       print(e.toString());
-    }
+    }Navigator.popUntil(context, ModalRoute.withName("/"));
   }
 
   Widget buildHomeScreen() {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
-        title: Text("Home"),
+        title: Text("Tomato"),
         leading: IconButton(
           onPressed: () {
             if (_drawerscaffoldkey.currentState.isDrawerOpen) {
@@ -80,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Scaffold(
         key: _drawerscaffoldkey,
-        drawer: Drawer(
+        drawer: Drawer( 
             child: SingleChildScrollView(
                 child: FutureBuilder(
           future: getUserInfo(),
@@ -91,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemCount: 1,
                   itemBuilder: (BuildContext context, int index) {
                     return Column(children: [
-                      Container(
+                      Container( 
                         color: Colors.lightGreen[100],
                         height: MediaQuery.of(this.context).size.height,
                         width: double.infinity,
@@ -148,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   this.context,
                                   new MaterialPageRoute(
                                       builder: (context) =>
-                                          new HomeScreen(auth: Auth())));
+                                          new MainPage(auth: Auth())));
                             },
                           ),
                           ListTile(
@@ -157,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               "Query",
                               style: TextStyle(color: Colors.black),
                             ),
-                            leading: Icon(Icons.image),
+                            leading: Icon(Icons.error),
                             onTap: () {
                               Navigator.push(
                                   this.context,
@@ -166,21 +167,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           new Faq ()));
                             },
                           ),
-                          ListTile(
-                            dense: true,
-                            title: Text(
-                              "Profile",
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            leading: Icon(Icons.person),
-                            onTap: () {
-                              Navigator.push(
-                                  this.context,
-                                  new MaterialPageRoute(
-                                      builder: (context) =>
-                                          new Profile(auth: Auth())));
-                            },
-                          ),
+                            
+                            
                         ]),
                       ),
                     ]);
@@ -198,10 +186,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: 360.0,
                 child: Carousel(
                   images: [
-                    ExactAssetImage("images/cotton1.jpg"),
-                    ExactAssetImage("images/cotton2.jpg"),
-                    ExactAssetImage("images/cotton4.jpg"),
-                    ExactAssetImage("images/cotton5.jpg"),
+                    ExactAssetImage("images/tmt1.jpg"),
+                    ExactAssetImage("images/tmt2.jpg"),
+                    ExactAssetImage("images/tmt3.jpg"),
+                    ExactAssetImage("images/tmt4.jpg"),
                   ],
                   dotSize: 4.0,
                   dotSpacing: 15.0,
@@ -214,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 )),
             SizedBox(height: 10),
             Text(
-              "Cotton ",
+              "Tomato ",
               style: TextStyle(
                 fontSize: 30.0,
                 color: Colors.black,
@@ -238,7 +226,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 textAlign: TextAlign.left,
                 text: TextSpan(children: <TextSpan>[
                   TextSpan(
-                    text: 'Cotton ',
+                    text: 'Tomato ',
                     style: TextStyle(
                       fontSize: 16.0,
                       color: Colors.black,
@@ -247,8 +235,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   TextSpan(
                     text:
-                        'is the collective name given to four species of plants in the genus Gossypium, Gossypium hirsutum, Gossypium barbadense, Gossypium arboreum and Gossypium herbaceum which are perennial shrubs in the family Malvaceae grown for the fluffy fiber which protects the seeds of the plant. G. hirsutum accounts for approximately 90% of world wide cotton production today',
-                    style: TextStyle(
+                     'Lycopersicum esculentum (syn. Solanum lycopersicum and Lycopersicon lycopersicum) is an herbaceous annual in the family Solanaceae grown for its edible fruit. The stems are covered in coarse hairs and the leaves are arranged spirally. The tomato plant produces yellow flowers, which can develop into a cyme of 3–12, and usually a round fruit (berry) which is fleshy, smoothed skinned and can be red, pink, purple, brown, orange or yellow in color. he tomato plant can grow 0.7–2 m (2.3–6.6 ft) in height and as an annual, is harvested after only one growing season. ' ,      style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.black,
                         fontWeight: FontWeight.w500),
@@ -281,8 +268,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   TextSpan(
                     text:
-                        'Cotton is best grown in desert conditions using irrigation. The seeds will germinate optimally at 34°C (93.2°F), while the seedlings requires a temperature between 24 and 29°C (75.2–84.2°F) to grow and develop properly. Cotton will grow on a variety of soils including sandy soil and heavy clay as long as it is water permeable and will grow optimally in a soil with a pH of 5.5–8.5. In addition cotton has a high tolerance for salt.  ',
-                    style: TextStyle(
+                       ' Tomatoes grow very well in warm areas at temperatures between 21 and 24°C (69.8–75.2°F). They require a deep, loamy, well-draining soil with a pH between 5.5 and 6.8. If soil drainage is a problem then tomatoes can be planted in a raised bed. Like all fruiting plants, tomatoes require full sun for most of the day. Sowing seeds In most cases, tomato seeds should be started indoors 6–8 weeks before last Spring frost. Seeds can be direct seeded in areas with a long growing season. Plant seeds to a depth of 0.6 cm (1/4 in) and water lightly.The optimum soil temperature for germination is 21–32°C (70–90°F).',       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.black,
                         fontWeight: FontWeight.w500),
@@ -304,7 +290,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             SizedBox(height: 10),
             Text(
-              "Alternaria leaf spot ",
+              "Early blight Alternaria solani",
               style: TextStyle(
                 fontSize: 20.0,
                 color: Colors.black,
@@ -317,9 +303,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: 360.0,
                 child: Carousel(
                   images: [
-                    ExactAssetImage("images/disease1.jpg"),
-                    ExactAssetImage("images/disease2.jpg"),
-                    ExactAssetImage("images/disease3.jpg"),
+                    ExactAssetImage("images/tm1.jpg"),
+                    ExactAssetImage("images/tm2.jpg"),
+                    ExactAssetImage("images/tm3.jpg"),
                   ],
                   dotSize: 4.0,
                   dotSpacing: 15.0,
@@ -344,8 +330,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Padding(
               padding: const EdgeInsets.all(4.0),
               child: Text(
-                "Small, circular brown lesions on cotyledons and seedling leaves which expand and develop a concentric pattern; necrotic areas coalesce and often have a purple margin; centers of lesions may dry out and drop form the plant creating a shot-hole appearance on the leaves.",
-                style: TextStyle(
+               'Early blight symptoms start as oval shaped lesions with a yellow chlorotic region across the lesion; concentric leaf lesions may be seen on infected leaves; leaf tissue between veins is destroyed; severe infections can cause leaves to completely collapse; as the disease progresses leaves become severely blighted leading to reduced yield',    style: TextStyle(
                     fontSize: 16.0,
                     color: Colors.black,
                     fontWeight: FontWeight.w500),
@@ -386,8 +371,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Padding(
               padding: const EdgeInsets.all(4.0),
               child: Text(
-                "Plants stressed by drought, nutrient deficiency and other pests are more susceptible to the disease; fungus spreads rapidly in dense canopies, especially during periods of warm, wet weather.",
-                style: TextStyle(
+               'Disease can spread rapidly after plants have set fruit; movement of air-borne spores and contact with infested soil are causes for the spread of the disease',   style: TextStyle(
                     fontSize: 16.0,
                     color: Colors.black,
                     fontWeight: FontWeight.w500),
@@ -407,8 +391,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Padding(
               padding: const EdgeInsets.all(4.0),
               child: Text(
-                "Plow crop residue into the soil to reduce inoculum levels; provide plants with adequate irrigation and nutrients, particularly potassium; applications of appropriate foliar fungicides may be required on susceptible cultivars.",
-                style: TextStyle(
+            'Apply appropriate fungicide at first sign of disease; destroy any volunteer solanaceous plants (tomato, potato, nightshade etc); practice crop rotation',    style: TextStyle(
                     fontSize: 16.0,
                     color: Colors.black,
                     fontWeight: FontWeight.w500),

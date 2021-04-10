@@ -49,6 +49,11 @@ print(e.toString());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       appBar: AppBar(
+        backgroundColor: Colors.red,
+        title: Text("FAQ"),
+        centerTitle: true,
+      ),
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
