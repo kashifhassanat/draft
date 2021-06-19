@@ -6,7 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 class User{
   final String uid;
 
@@ -25,7 +26,7 @@ abstract class AuthBase{
 }
 
 class Auth implements AuthBase {
-
+Map profile ={};
 final _firebaseAuth =FirebaseAuth.instance;
 
 User _userFromFirebase(FirebaseUser user){
@@ -94,16 +95,27 @@ return _userFromFirebase(user);
 @override
 Future<User> signInWithFacbook() async{
   final facebookLogin = FacebookLogin();
+  facebookLogin.loginBehavior=FacebookLoginBehavior.webOnly;
   final result = await facebookLogin.logInWithReadPermissions(
     ['public_profile']);
     if(result.accessToken != null){
       final authResult= await FirebaseAuth.instance.signInWithCredential(
         FacebookAuthProvider.getCredential(
           accessToken: result.accessToken.token
-        ));   await  Firestore.instance.collection("users")
+        )
+        );
+        
+        var graphResponse = await http.get(
+            'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${ result.accessToken.token}');
+        
+        profile =jsonDecode(graphResponse.body);
+
+  
+
+ await  Firestore.instance.collection("users")
     .document(authResult.user.uid).setData(
       {"uid": authResult.user.uid,
-                                      "fname": "authResult.user.displayName",
+                                      "fname": profile["name"],
                                     "password":"type password" ,
                                     "email": "type email",
                                     "address":"type address"

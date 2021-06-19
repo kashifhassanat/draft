@@ -119,7 +119,7 @@ Widget buildHomeScreen() {
                   height: 300.0,
                   child: Center(
                     child: _image == null
-                        ? Text("Pick the Grapes leaf image by tapping on the lower Floating button", style: TextStyle(fontSize: 18))
+    ? Text("Pick the Grapes leaf image by tapping on the lower Floating button", style: TextStyle(fontSize: 18))
                         : Image.file(_image), 
                   ),
                   

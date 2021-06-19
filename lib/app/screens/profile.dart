@@ -1,3 +1,4 @@
+import 'package:abhi_flutter_alertdialog/abhi_flutter_alertdialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -41,23 +42,18 @@ class _State extends State<Profile> {
         .get();
   }
 
-  Future<void> _signOut() async {
+ Future<void> _signOut() async {
     try {
       await widget.auth.signOut();
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return DefaultPage(
-          auth: Auth(),
-        );
-      }));
+      
     } catch (e) {
       print(e.toString());
-    }
+    }Navigator.popUntil(context, ModalRoute.withName("/"));
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.amberAccent,
         title: Text("Profile",
@@ -74,7 +70,24 @@ class _State extends State<Profile> {
         ),
         actions: [
           FlatButton(
-            onPressed: _signOut,
+            onPressed:  () => showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog1(
+                        context: context,
+                        title: 'Logout',
+                        content: 'Are you sure you want to exit!!!',
+                        action1: 'cancel',
+                        action2: 'yes',
+                        function1: () => functionA(context),
+                        function2: () => functionB(context),
+                        div: false,
+                        txtAlign: 2,
+                        radius: 0.0,
+                        boxColor: Colors.redAccent,
+                        btnTxtColor: Colors.white,
+                        txtColor: Colors.white,
+                      ),
+                    ),
             child: Text(
               "Log Out",
               style: TextStyle(
@@ -360,5 +373,14 @@ class _State extends State<Profile> {
         ),
       ),
     );
+  }
+
+   functionA(BuildContext context) {
+    Navigator.of(context, rootNavigator: true).pop('dialog');
+  }
+
+  functionB(BuildContext context) {
+
+    _signOut();
   }
 }

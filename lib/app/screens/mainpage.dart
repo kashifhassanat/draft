@@ -9,7 +9,6 @@ import 'apple.dart';
 
 
 
-/// This is the stateful widget that the main application instantiates.
 class MainPage extends StatefulWidget {
  final AuthBase auth;
   final String title;
@@ -20,7 +19,7 @@ class MainPage extends StatefulWidget {
   _MainPageState createState() => _MainPageState();
 }
 
-/// This is the private State class that goes with MainPage.
+
 class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
 

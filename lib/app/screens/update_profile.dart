@@ -103,7 +103,7 @@ class _State extends State<UpdateProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomInset: false,
         body: Container(
     width: double.infinity,
     decoration: BoxDecoration(

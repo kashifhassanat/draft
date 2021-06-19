@@ -1,3 +1,4 @@
+import 'package:abhi_flutter_alertdialog/abhi_flutter_alertdialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +69,24 @@ class _AppleScreenState extends State<AppleScreen> {
         ),
         actions: [
           FlatButton(
-            onPressed: _signOut,
+            onPressed:() => showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog1(
+                        context: context,
+                        title: 'Logout',
+                        content: 'Are you sure you want to exit!!!',
+                        action1: 'cancel',
+                        action2: 'yes',
+                        function1: () => functionA(context),
+                        function2: () => functionB(context),
+                        div: false,
+                        txtAlign: 2,
+                        radius: 0.0,
+                        boxColor: Colors.redAccent,
+                        btnTxtColor: Colors.white,
+                        txtColor: Colors.white,
+                      ),
+                    ),
             child: Text(
               "Log Out",
               style: TextStyle(
@@ -418,5 +436,14 @@ class _AppleScreenState extends State<AppleScreen> {
         },
       ),
     );
+  }
+
+ functionA(BuildContext context) {
+    Navigator.of(context, rootNavigator: true).pop('dialog');
+  }
+
+  functionB(BuildContext context) {
+
+    _signOut();
   }
 }

@@ -5,6 +5,8 @@ import 'package:plant_disease_detection/app/common_widget/CustomRaisedButton.dar
 import 'package:plant_disease_detection/app/screens/homescreen.dart';
 import 'package:plant_disease_detection/app/services/auth.dart';
 
+import 'mainpage.dart';
+
 
 
 
@@ -32,7 +34,24 @@ class _State extends State<Login> {final formKey = new GlobalKey();
 
   String get _email => _emailController.text;
   String get _password => _passwordController.text;
+String emailValidator(String value) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value)) {
+      return 'Email format is invalid';
+    } else {
+      return null;
+    }
+  }
 
+  String pwdValidator(String value) {
+    if (value.length < 8) {
+      return 'Password must be longer than 8 characters';
+    } else {
+      return null;
+    }
+  }
   void _submit() async {
     try {
        {
@@ -41,7 +60,7 @@ class _State extends State<Login> {final formKey = new GlobalKey();
      Navigator.pushAndRemoveUntil(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => HomeScreen(
+                                                builder: (context) => MainPage(
                                                        auth: Auth(), 
                                                     )),
                                             (Route<dynamic> route) => false );
@@ -54,7 +73,7 @@ class _State extends State<Login> {final formKey = new GlobalKey();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
@@ -125,49 +144,50 @@ class _State extends State<Login> {final formKey = new GlobalKey();
                     SizedBox(
                       height: 12.0,
                     ),
-                    Container(
-                      child: TextField(controller: _emailController,
-                        decoration: InputDecoration(
-                          labelText: "Email Adress",
-                          hintText: "Enter your email",
-                          // hoverColor: Colors.black,
-                          fillColor: Colors.white, filled: true,
-                          labelStyle: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50.0),
-                            // borderSide: BorderSide(color: Colors.grey),
-                          ),
-                        ), autocorrect: false,
-                        keyboardType:TextInputType.emailAddress,
-                        
+                       Container(
+                        child: TextFormField(
+                          controller: _emailController,
+                          decoration: InputDecoration(
+                            labelText: "Email Adress",
+                            hintText: "Enter your email",
+                            // hoverColor: Colors.black,
+                            fillColor: Colors.white, filled: true,
+                            labelStyle: TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50.0),
+                              // borderSide: BorderSide(color: Colors.grey),
+                            ),
+                            
+                          ),  validator: emailValidator,
+                        ),
                       ),
-                    ),
                     SizedBox(
                       height: 12.0,
                     ),
-                    Container(
-                      child: TextField(controller: _passwordController,
-                        decoration: InputDecoration(
-                          labelText: "Password",
-                          hintText: "Enter your password",
-                          // hoverColor: Colors.black,
-                          fillColor: Colors.white, filled: true,
-                          labelStyle: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold,
-                          ), 
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50.0),
-                            // borderSide: BorderSide(color: Colors.grey),
+                         Container(
+                        child: TextFormField(
+                          controller: _passwordController,
+                          decoration: InputDecoration(
+                            labelText: "Password",
+                            hintText: "Enter your password",
+                            // hoverColor: Colors.black,
+                            fillColor: Colors.white, filled: true,
+                            labelStyle: TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50.0),
+                              // borderSide: BorderSide(color: Colors.grey),
+                            ),
                           ),
-                        ), autocorrect: false,
-                       
-                        obscureText: true,
+                          obscureText: true,
+                          validator: pwdValidator,
+                        ),
                       ),
-                    ),
                     Container(
                       padding: const EdgeInsets.all(16),
                       child: Column(

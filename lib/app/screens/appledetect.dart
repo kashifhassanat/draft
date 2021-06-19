@@ -10,8 +10,11 @@ import 'package:plant_disease_detection/app/screens/mainpage.dart';
 import 'package:plant_disease_detection/app/screens/profile.dart';
 import 'package:plant_disease_detection/app/services/auth.dart';
 import 'package:tflite/tflite.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
+import 'AppleDiseasesScreen/apple_rot.dart';
 import 'AppleDiseasesScreen/apple_scab.dart';
+import 'AppleDiseasesScreen/applerust.dart';
 import 'diseaaseScreen.dart';
 
 class Appledisease extends StatefulWidget {
@@ -39,13 +42,21 @@ class _ApplediseaseState extends State<Appledisease> {
 
   loadModel() async {
     await Tflite.loadModel(
-     model: "model/apple.tflite",
+     model: "model/applenew.tflite",
     labels: "model/apple.txt",
       numThreads: 1,
     );
   }
 
-   Future classifyImage(File image) async {
+   Future classifyImage(File image) async {    Fluttertoast.showToast(
+        msg: "Detecting Disease",
+        toastLength:Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+       
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
     var output = await Tflite.runModelOnImage(
         path: image.path,
          imageMean: 0.0, 
@@ -57,6 +68,7 @@ class _ApplediseaseState extends State<Appledisease> {
     setState(() {
       _loading = false;
       _outputs = output;
+  
        {
 if(_outputs[0]["label"]=="Apple_Black_rot"){
 
@@ -64,7 +76,7 @@ if(_outputs[0]["label"]=="Apple_Black_rot"){
                                   this.context,
                                   new MaterialPageRoute(
                                       builder: (context) =>
-                                          new Report()));
+                                          new AppleRot()));
 }else if(_outputs[0]["label"]=="Apple_Apple_scab"){
 
    Navigator.push(
@@ -72,6 +84,14 @@ if(_outputs[0]["label"]=="Apple_Black_rot"){
                                   new MaterialPageRoute(
                                       builder: (context) =>
                                           new AppleScab()));
+}
+else if(_outputs[0]["label"]=="Apple_Cedar_apple_rust"){
+
+   Navigator.push(
+                                  this.context,
+                                  new MaterialPageRoute(
+                                      builder: (context) =>
+                                          new AppleRust()));
 }
                           }
     });

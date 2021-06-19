@@ -103,7 +103,7 @@ class _State extends State<CreateLogin> {
     return Form(
        key: _formKey,
           child: Scaffold(
-        resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomInset: false,
         body: Container(
           width: double.infinity,
           decoration: BoxDecoration(
