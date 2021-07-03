@@ -1,5 +1,4 @@
 
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -27,6 +26,7 @@ abstract class AuthBase{
 
 class Auth implements AuthBase {
 Map profile ={};
+
 final _firebaseAuth =FirebaseAuth.instance;
 
 User _userFromFirebase(FirebaseUser user){
@@ -43,7 +43,6 @@ Future <User> currentUser() async {
 
 final user = await _firebaseAuth.currentUser();
 return _userFromFirebase(user);
-
 
 
 }    
@@ -144,16 +143,10 @@ Future<User> createUserWithEmailAndPassword(String email,String password) async{
 
 @override
 Future <void> signOut() async {
-
- 
-
- final googleSignIn = GoogleSignIn();
+  final googleSignIn = GoogleSignIn();
     await googleSignIn.signOut();
     final facebookLogin = FacebookLogin();
     await facebookLogin.logOut();
     await _firebaseAuth.signOut();
-
-
 }
-
 }

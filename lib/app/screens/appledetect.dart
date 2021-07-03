@@ -26,7 +26,6 @@ class _ApplediseaseState extends State<Appledisease> {
   List _outputs;
   File _image;
   bool _loading = false;
-  
 
   @override
   void initState() {
@@ -42,75 +41,58 @@ class _ApplediseaseState extends State<Appledisease> {
 
   loadModel() async {
     await Tflite.loadModel(
-     model: "model/applenew.tflite",
-    labels: "model/apple.txt",
-      numThreads: 1,
+      model: "model/apple/applenew.tflite",
+      labels: "model/apple/apple.txt",
+      numThreads: 1, // defaults to 1
     );
   }
 
-   Future classifyImage(File image) async {    Fluttertoast.showToast(
+  Future classifyImage(File image) async {
+    Fluttertoast.showToast(
         msg: "Detecting Disease",
-        toastLength:Toast.LENGTH_SHORT,
+        toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
-       
         backgroundColor: Colors.red,
         textColor: Colors.white,
-        fontSize: 16.0
-    );
+        fontSize: 16.0);
     var output = await Tflite.runModelOnImage(
         path: image.path,
-         imageMean: 0.0, 
-        imageStd: 255.0, 
-        numResults: 2, 
-         threshold: 0.2, 
-         asynch: true
-        );
+        imageMean: 0.0,
+        imageStd: 225.0,
+        numResults: 2,
+        threshold: 0.2,
+        asynch: true);
     setState(() {
       _loading = false;
       _outputs = output;
-  
-       {
-if(_outputs[0]["label"]=="Apple_Black_rot"){
 
-   Navigator.push(
-                                  this.context,
-                                  new MaterialPageRoute(
-                                      builder: (context) =>
-                                          new AppleRot()));
-}else if(_outputs[0]["label"]=="Apple_Apple_scab"){
-
-   Navigator.push(
-                                  this.context,
-                                  new MaterialPageRoute(
-                                      builder: (context) =>
-                                          new AppleScab()));
-}
-else if(_outputs[0]["label"]=="Apple_Cedar_apple_rust"){
-
-   Navigator.push(
-                                  this.context,
-                                  new MaterialPageRoute(
-                                      builder: (context) =>
-                                          new AppleRust()));
-}
-                          }
+      {
+        if (_outputs[0]["label"] == "Apple_Black_rot_496") {
+          Navigator.push(this.context,
+              new MaterialPageRoute(builder: (context) => new AppleRot()));
+        } else if (_outputs[0]["label"] == "Apple_Apple_scab_504") {
+          Navigator.push(this.context,
+              new MaterialPageRoute(builder: (context) => new AppleScab()));
+        } else if (_outputs[0]["label"] == "Apple_Cedar_apple_rust_220") {
+          Navigator.push(this.context,
+              new MaterialPageRoute(builder: (context) => new AppleRust()));
+        }
+      }
     });
   }
+
   @override
   void dispose() {
     Tflite.close();
     super.dispose();
   }
 
-
-
-Future getImagefromGallery() async {
+  Future getImagefromGallery() async {
     final image = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
       _image = image;
     });
   }
- 
 
   Future getImagefromcamera() async {
     final image = await ImagePicker.pickImage(source: ImageSource.camera);
@@ -125,20 +107,19 @@ Future getImagefromGallery() async {
     setState(() {
       _loading = true;
       _image = image;
-    
     });
-  
   }
-var text="diseased cotton leaf";
 
- @override
+  var text = "diseased cotton leaf";
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: buildHomeScreen(),
     );
   }
 
-Widget buildHomeScreen() {
+  Widget buildHomeScreen() {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
@@ -151,7 +132,6 @@ Widget buildHomeScreen() {
             padding: const EdgeInsets.all(16.0),
             child: ListView(
               children: <Widget>[
-               
                 SizedBox(
                   height: 30.0,
                 ),
@@ -160,20 +140,25 @@ Widget buildHomeScreen() {
                   height: 300.0,
                   child: Center(
                     child: _image == null
-                        ? Text("Pick the Apple leaf image by tapping on the lower Floating button", style: TextStyle(fontSize: 18))
-                        : Image.file(_image), 
+                        ? Text(
+                            "Pick the Apple leaf image by tapping on the lower Floating button",
+                            style: TextStyle(fontSize: 18))
+                        : Image.file(_image),
                   ),
-                  
-                ), 
+                ),
                 SizedBox(
                   height: 30.0,
-                ), Container(
-child: _image == null ? Container() : _outputs != null ? 
-                  Text
-                  (_outputs[0]["label"],
-                  style: TextStyle
-                  (color: Colors.black,fontSize: 20),
-                  )  : Container(child: Text("")),
+                ),
+                Container(
+                  child: _image == null
+                      ? Container()
+                      : _outputs != null
+                          ? Text(
+                              _outputs[0]["label"],
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 20),
+                            )
+                          : Container(child: Text("")),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -182,33 +167,27 @@ child: _image == null ? Container() : _outputs != null ?
                     width: 80.0,
                     child: SingleChildScrollView(
                       child: CustomRaisedButton(
-                        color: Color(0xFFB2002D),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.image,
-                              color: Colors.white,
-                            ),
-                            Text(
-                              '  Detect Apple Disease',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 19.0,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                        onPressed: ()=>classifyImage(_image)
-                       
-                      ),
-                      ),    
-                                        
+                          color: Color(0xFFB2002D),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.image,
+                                color: Colors.white,
+                              ),
+                              Text(
+                                '  Detect Apple Disease',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 19.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          onPressed: () => classifyImage(_image)),
                     ),
-                    
                   ),
-                  
-                
+                ),
               ],
             ),
           ),
@@ -252,7 +231,4 @@ child: _image == null ? Container() : _outputs != null ?
       ),
     );
   }
-
-
-
 }

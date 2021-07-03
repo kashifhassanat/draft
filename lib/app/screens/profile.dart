@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:plant_disease_detection/app/common_widget/CustomRaisedButton.dart';
+import 'package:plant_disease_detection/app/landing_page.dart';
 import 'package:plant_disease_detection/app/screens/detectimage.dart';
 import 'package:plant_disease_detection/app/screens/faq.dart';
 import 'package:plant_disease_detection/app/screens/homescreen.dart';
@@ -48,7 +49,7 @@ class _State extends State<Profile> {
       
     } catch (e) {
       print(e.toString());
-    }Navigator.popUntil(context, ModalRoute.withName("/"));
+    }Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Landingpage(auth : Auth()),), (route) => route.isFirst);
   }
   @override
   Widget build(BuildContext context) {

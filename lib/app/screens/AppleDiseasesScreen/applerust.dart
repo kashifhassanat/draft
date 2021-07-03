@@ -14,7 +14,7 @@ class _AppleRustState extends State<AppleRust> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
-        title: Text("AppleRust"),
+        title: Text("Applerust"),
         centerTitle: true,
       ),
       body: Container(
@@ -75,7 +75,7 @@ class _AppleRustState extends State<AppleRust> {
                       RichText(
                         text: TextSpan(children: <TextSpan>[
                           TextSpan(
-                            text: 'Disease AppleRust ',
+                            text: 'apple_rust',
                             style: TextStyle(
                               fontSize: 26.0,
                               color: Colors.black,

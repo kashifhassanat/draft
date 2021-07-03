@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:plant_disease_detection/app/common_widget/CustomRaisedButton.dart';
+import 'package:plant_disease_detection/app/landing_page.dart';
 import 'package:plant_disease_detection/app/services/auth.dart';
 
 import 'homescreen.dart';
@@ -32,9 +33,8 @@ void _submit()async{
                                         Navigator.pushAndRemoveUntil(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => HomeScreen(
-                                                       auth: Auth(), 
-                                                    )),
+                                                builder: (context) => Landingpage(auth: Auth()),
+                                                  ),
                                             (Route<dynamic> route) => false),
                                    
                                       });

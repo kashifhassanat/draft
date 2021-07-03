@@ -113,6 +113,7 @@ class _State extends State<UpdateProfile> {
       /// crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
+          height: MediaQuery.of(this.context).size.height,
           decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.bottomLeft,

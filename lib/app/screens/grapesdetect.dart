@@ -5,6 +5,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:plant_disease_detection/app/common_widget/CustomRaisedButton.dart';
 import 'package:plant_disease_detection/app/floatingbutton/speed_dialchild.dart';
 import 'package:plant_disease_detection/app/floatingbutton/speeddial.dart';
+import 'package:plant_disease_detection/app/screens/GrapeDiseasesScreen/grapeblackrot.dart';
+import 'package:plant_disease_detection/app/screens/GrapeDiseasesScreen/grapeisariopsissleafspot.dart';
+import 'package:plant_disease_detection/app/screens/GrapeDiseasesScreen/grapesblackmeasles.dart';
 import 'package:plant_disease_detection/app/screens/homescreen.dart';
 import 'package:plant_disease_detection/app/screens/profile.dart';
 import 'package:plant_disease_detection/app/services/auth.dart';
@@ -19,7 +22,6 @@ class _GrapesDieseaseState extends State<GrapesDiesease> {
   List _outputs;
   File _image;
   bool _loading = false;
-  
 
   @override
   void initState() {
@@ -35,42 +37,55 @@ class _GrapesDieseaseState extends State<GrapesDiesease> {
 
   loadModel() async {
     await Tflite.loadModel(
-     model: "model/apple.tflite",
-    labels: "model/apple.txt",
-      numThreads: 1,
+      model: "model/grape/grape_cnn_model.tflite",
+      labels: "model/grape/model_labels.txt",
+      numThreads: 1, // defaults to 1
+      isAsset:
+          true, // defaults to true, set to false to load resources outside assets
+      useGpuDelegate: false,
     );
   }
 
-   Future classifyImage(File image) async {
+  Future classifyImage(File image) async {
     var output = await Tflite.runModelOnImage(
         path: image.path,
-         imageMean: 0.0, 
-        imageStd: 255.0, 
-        numResults: 2, 
-         threshold: 0.2, 
-         asynch: true
-        );
+        imageMean: 0.0,
+        imageStd: 255.0,
+        numResults: 2,
+        threshold: 0.2,
+        asynch: true);
     setState(() {
       _loading = false;
       _outputs = output;
 
+    {
+       if (_outputs[0]["label"] == "Grape___Black_rot") {
+          Navigator.push(this.context,
+              new MaterialPageRoute(builder: (context) => new GrapeBlackRot()));
+        } else if (_outputs[0]["label"] == "Grape___Esca_(Black_Measles)") {
+          Navigator.push(this.context,
+              new MaterialPageRoute(builder: (context) => new GrapesBlackMeasles()));
+        } else if (_outputs[0]["label"] == "Grape___Leaf_blight_(Isariopsis_Leaf_Spot)") {
+          Navigator.push(this.context,
+              new MaterialPageRoute(builder: (context) => new GrapeIsariopsissLeafSpot()));
+        }
+    }
+
     });
   }
+
   @override
   void dispose() {
     Tflite.close();
     super.dispose();
   }
 
-
-
-Future getImagefromGallery() async {
+  Future getImagefromGallery() async {
     final image = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
       _image = image;
     });
   }
- 
 
   Future getImagefromcamera() async {
     final image = await ImagePicker.pickImage(source: ImageSource.camera);
@@ -83,21 +98,21 @@ Future getImagefromGallery() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     if (image == null) return null;
     setState(() {
-      _loading = true;
+      // _loading = true;
       _image = image;
     });
-  
   }
-var text="diseased cotton leaf";
 
- @override
+  var text = "diseased cotton leaf";
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: buildHomeScreen(),
     );
   }
 
-Widget buildHomeScreen() {
+  Widget buildHomeScreen() {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.purple,
@@ -110,7 +125,6 @@ Widget buildHomeScreen() {
             padding: const EdgeInsets.all(16.0),
             child: ListView(
               children: <Widget>[
-               
                 SizedBox(
                   height: 30.0,
                 ),
@@ -119,20 +133,25 @@ Widget buildHomeScreen() {
                   height: 300.0,
                   child: Center(
                     child: _image == null
-    ? Text("Pick the Grapes leaf image by tapping on the lower Floating button", style: TextStyle(fontSize: 18))
-                        : Image.file(_image), 
+                        ? Text(
+                            "Pick the Grapes leaf image by tapping on the lower Floating button",
+                            style: TextStyle(fontSize: 18))
+                        : Image.file(_image),
                   ),
-                  
-                ), 
+                ),
                 SizedBox(
                   height: 30.0,
-                ), Container(
-child: _image == null ? Container() : _outputs != null ? 
-                  Text
-                  (_outputs[0]["label"],
-                  style: TextStyle
-                  (color: Colors.black,fontSize: 20),
-                  )  : Container(child: Text("")),
+                ),
+                Container(
+                  child: _image == null
+                      ? Container()
+                      : _outputs != null
+                          ? Text(
+                              _outputs[0]["label"],
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 20),
+                            )
+                          : Container(child: Text("")),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -141,33 +160,27 @@ child: _image == null ? Container() : _outputs != null ?
                     width: 80.0,
                     child: SingleChildScrollView(
                       child: CustomRaisedButton(
-                        color: Color(0xFFB2002D),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.image,
-                              color: Colors.white,
-                            ),
-                            Text(
-                              '  Detect Grape Disease',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 19.0,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                        onPressed: ()=>classifyImage(_image)
-                       
-                      ),
-                      ),    
-                                        
+                          color: Color(0xFFB2002D),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.image,
+                                color: Colors.white,
+                              ),
+                              Text(
+                                '  Detect Grape Disease',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 19.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          onPressed: () => classifyImage(_image)),
                     ),
-                    
                   ),
-                  
-                
+                ),
               ],
             ),
           ),
@@ -211,7 +224,4 @@ child: _image == null ? Container() : _outputs != null ?
       ),
     );
   }
-
-
-
 }

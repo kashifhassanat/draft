@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:plant_disease_detection/app/common_widget/CustomRaisedButton.dart';
+import 'package:plant_disease_detection/app/landing_page.dart';
 import 'package:plant_disease_detection/app/screens/homescreen.dart';
 import 'package:plant_disease_detection/app/screens/login.dart';
 import 'package:plant_disease_detection/app/services/auth.dart';
@@ -77,7 +78,7 @@ class _State extends State<CreateLogin> {
                         Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => HomeScreen(
+                                builder: (context) => Landingpage(
                                       auth: Auth(),
                                     )),
                             (Route<dynamic> route) => false),
@@ -88,8 +89,18 @@ class _State extends State<CreateLogin> {
                       }
                       ));
                       
-    } catch (e) {
-      print(e.toString());
+    }catch (e) {
+      print(e.message);
+        Fluttertoast.showToast(
+        msg: e.message,
+        toastLength:Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+       
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
+      
     }
      CircularProgressIndicator(
               backgroundColor: Colors.redAccent,

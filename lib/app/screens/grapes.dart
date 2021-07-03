@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:plant_disease_detection/app/landing_page.dart';
 import 'package:plant_disease_detection/app/screens/appledetect.dart';
 import 'package:plant_disease_detection/app/screens/check.dart';
 import 'package:plant_disease_detection/app/screens/detectimage.dart';
@@ -49,7 +50,7 @@ class _GrapesScreenState extends State<GrapesScreen> {
       
     } catch (e) {
       print(e.toString());
-    }Navigator.popUntil(context, ModalRoute.withName("/"));
+    }Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Landingpage(auth : Auth()),), (route) => route.isFirst);
   }
 
   Widget buildGrapesScreen() {

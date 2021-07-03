@@ -24,7 +24,6 @@ class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
 
 final List<Widget> _widgetOptions = [
-    HomeScreen(auth: Auth(),),
     AppleScreen(auth: Auth(),),
     GrapesScreen(auth: Auth(),),
     Profile(auth: Auth())
@@ -45,11 +44,6 @@ final List<Widget> _widgetOptions = [
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-               icon: ImageIcon( AssetImage("images/toma.png"),size: 40,color: Colors.red,  ),
-             title: Text("Tomato"),
-            backgroundColor: Colors.white
-          ),
           BottomNavigationBarItem(
             icon: ImageIcon( AssetImage("images/apple.png") ,size: 30,color: Colors.red,  ),
             title: Text("Apple"),

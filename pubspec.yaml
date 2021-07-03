@@ -57,10 +57,14 @@ flutter:
 
   uses-material-design: true
   assets:
+
+    # - images/
     - images/main.png
     - images/pddlogo.png
     - images/gmail.png
     - images/farm.png
+    - images/pdd_white.png
+    - images/pdd_green.png
     - images/fb.png
     - images/faq.png
     - images/bgimg.jpg
@@ -72,10 +76,6 @@ flutter:
     - images/disease1.jpg
     - images/disease2.jpg
     - images/disease3.jpg
-    - model/model_labels.txt
-    - model/model.tflite
-    - model/apple.txt
-    - model/apple.tflite
     - images/toma.png
     - images/apple.png
     - images/grapes.png
@@ -93,10 +93,10 @@ flutter:
     - images/esca1.jpg
     - images/esca2.jpg
     - images/esca3.jpg
-    - images/tmt1.jpg
-    - images/tmt2.jpg
-    - images/tmt3.jpg
-    - images/tmt4.jpg
+    - images/tm1.jpg
+    - images/tm2.jpg
+    - images/tm3.jpg
+    - images/tm4.jpg
     - images/tm1.jpg
     - images/tm2.jpg
     - images/tm3.jpg
@@ -113,7 +113,16 @@ flutter:
     - images/applerust/rust2.JPG
     - images/applerust/rust3.JPG
     - images/applerust/rust4.JPG
-    - model/applenew.tflite
+    - model/apple_cnn.tflite
+    - model/model_labels.txt
+    - model/grape/grape_cnn_model.tflite
+    - model/grape/model_labels.txt
+    - model/apple/apple.txt
+    - model/apple/applenew.tflite
+    - model/apple/apple_cnn.tflite
+    # - model/apple/applen ew.tflite
+    - model/apple_resnet50.tflite
+    
     
 
 fonts:
